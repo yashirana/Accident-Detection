@@ -1,0 +1,41 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+venv/
+env/
+ENV/
+
+# Virtual environments
+.venv/
+
+# IDE/editor
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Data / models / secrets
+data/
+train/
+val/
+test/
+*.h5
+*.ckpt
+*.pt
+*.db
+*.sqlite3
+client_secret_*.json
+graph-*.json
+graph-388510-*.json
+*.pem
+*.key
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Git LFS placeholder
+.gitattributes
+*.ipynb_checkpoints
+*__pycache__
+/cars.mp4
+/model_weights.h5

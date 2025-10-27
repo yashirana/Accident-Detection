@@ -1,0 +1,14 @@
+Flask
+opencv-python  
+numpy
+pandas
+os
+Flask-Bootstrap
+random
+time
+google-auth  
+telebot
+matplotlib 
+tensorflow 
+keras 
+pydot

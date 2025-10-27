@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Page</title>
+    <link rel="stylesheet" href="noti_styles.css">
+</head>
+<body>
+    <div id="notification-container"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const notifications = [
+        { id: 1, message: 'Collision at Location A' },
+        { id: 2, message: 'Hit and Run at Location C' },
+        { id: 3, message: 'Medical help at Location A' },
+        { id: 4, message: 'Bad road condition at Location B' },
+        { id: 5, message: 'Heavy Traffic at Locatio D' }
+    ];
+
+    const container = document.getElementById('notification-container');
+
+    notifications.forEach(notification => {
+        const notificationElement = document.createElement('div');
+        notificationElement.className = 'notification';
+        notificationElement.innerHTML = `
+            <span>${notification.message}</span>
+            <button onclick="dismissNotification(${notification.id})">Dismiss</button>
+        `;
+        container.appendChild(notificationElement);
+    });
+});
+
+function dismissNotification(id) {
+    const container = document.getElementById('notification-container');
+    const notificationElements = container.getElementsByClassName('notification');
+    
+    for (let i = 0; i < notificationElements.length; i++) {
+        const notificationElement = notificationElements[i];
+        if (notificationElement.innerHTML.includes(`dismissNotification(${id})`)) {
+            container.removeChild(notificationElement);
+            break;
+        }
+    }
+}
+
+    </script>
+</body>
+</html>

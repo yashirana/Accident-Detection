@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <!-- My CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style1.css') }}">
+    <!-- Load JavaScript -->
+
+    <!-- Load JavaScript -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    
+    <title>AdminHub</title>
+</head>
+
+<body>
+
+
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+        <a href="#" class="brand">
+            <i class='bx bxs-smile'></i>
+            <span class="text">Accident Data</span>
+        </a>
+        <ul class="side-menu top">
+            <li class="active">
+                <a href="#">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="text">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://drive.google.com/drive/folders/1ZOJMN0LIaRuM8TZnD1ncU8ObOn7-Xaoz" download="Last Year Data">
+                    <i class='bx bxs-file-pdf'></i> Last Year Data (PDF)
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('static', filename='analytics.html') }}" target="_blank">
+                    <i class='bx bxs-doughnut-chart'></i>
+                    <span class="text">Analytics</span>
+                </a>
+                
+            </li>
+            <li>
+                <a href="https://docs.google.com/forms/d/1bF2vzuYBJF4ZKWg4J9VapzKQMNCnpVDTHixsaKyBkDg/edit#responses" target="_blank">
+                    <i class='bx bxs-message-dots'></i>
+                    <span class="text">Review</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" onclick="showFineMessageBox()">
+                    <i class='bx bxs-group'></i>
+                    <span class="text">Fine</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="side-menu">
+            <li>
+                <a href="{{ url_for('static', filename='setting.html') }}">
+                    <i class='bx bxs-cog'></i>
+                    <span class="text">Settings</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+
+
+    <!-- CONTENT -->
+    <section id="content">
+        <!-- NAVBAR -->
+        <nav>
+            <i class='bx '></i>
+            <a href="#" class="nav-link"></a>
+            <form id="searchForm">
+                <div class="form-input">
+                    <input id="searchInput" type="text" placeholder="Search...">
+                    <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
+            <input type="checkbox" id="switch-mode" hidden>
+            <label for="switch-mode" class="switch-mode" onclick="openLink()"></label>
+            
+            <script>
+            function openLink() {
+                window.open("http://127.0.0.1:5000/about", "_blank");
+            }
+            </script>
+            
+            <a href="{{ url_for('static', filename='notification.html') }}" class="notification">
+                <i class='bx bxs-bell'></i>
+                <span class="num">5</span>
+            </a>
+            <a href="#" class="profile"></a>
+        </nav>
+        <!-- NAVBAR -->
+
+        <!-- MAIN -->
+        <main>
+            <div class="head-title">
+                <div class="left">
+                    <h1>Dashboard</h1>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Dashboard</a>
+                        </li>
+                        <li><i class='bx bx-chevron-right'></i></li>
+                        <li>
+                            <a class="active" href="#">Home</a>
+                        </li>
+                    </ul>
+                </div>
+                <a href="#" class="btn-download">
+                    <i class='bx bxs-'></i>
+                    <span class="text">Techno Tuners Elite</span>
+                </a>
+            </div>
+
+            <ul class="box-info">
+                <li>
+                    <i class='bx bxs-car'></i>
+                    <span class="text">
+                        <h3>10.2 k</h3>
+                        <p>Total Accidents in last Month</p>
+                    </span>
+                </li>
+                <li>
+                    <i class='bx bxs-sun'></i>
+                    <span id="weather-text" class="text">
+                        <h3>Karnataka</h3>
+                        <p>Weather</p>
+                    </span>
+                </li>
+                <li>
+                    <i class='bx bx-calendar'></i>
+                    <span class="text">
+                        <h3>Accident List</h3>
+                        <p>
+                        <details>
+                            <summary> Time Wise</summary>
+                            <p><a href="#" onclick="showMonthWiseData()">Month Wise</a> <br> <a href="#"
+                                    onclick="showYearWiseData()">Year Wise</a></p>
+                        </details>
+                        </p>
+                    </span>
+                </li>
+            </ul>
+
+
+            <div class="table-data">
+                <div class="order">
+                    <div class="head">
+                        <h3>Accident Detected</h3>
+                        <i class='bx '></i>
+                        <i class='bx '></i>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Place of Accident</th>
+                                <th>Road Condition</th>
+                                <th>Type of Accident</th>
+                                <th>Accident Detected Weather Info</th>
+                                <th>Total No. of Accidents</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="location" data-location="Loc A">
+                                    <!-- <img src="img/people.png"> -->
+                                    <p>Loc A</p>
+                                </td>
+                                <td>Highway</td>
+                                <td><span class="status completed">Collision</span></td>
+                                <td>Sunny</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                <td class="location" data-location="Loc B">
+                                    <!-- <img src="img/people.png"> -->
+                                    <p>Loc B</p>
+                                </td>
+                                <td>Highway</td>
+                                <td><span class="status pending">Overspeeding</span></td>
+                                <td>Rainy</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="location" data-location="Loc C">
+                                    <!-- <img src="img/people.png"> -->
+                                    <p>Loc C</p>
+                                </td>
+                                <td>Village</td>
+                                <td><span class="status process">Collision</span></td>
+                                <td>Cloudy</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td class="location" data-location="Loc B">
+                                    <!-- <img src="img/people.png"> -->
+                                    <p>Loc B</p>
+                                </td>
+                                <td>Highway</td>
+                                <td><span class="status pending">Crash</span></td>
+                                <td>Thunderstorm</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td class="location" data-location="Loc B">
+                                    <!-- <img src="img/people.png"> -->
+                                    <p>Loc B</p>
+                                </td>
+                                <td>Highway</td>
+                                <td><span class="status completed">Collision</span></td>
+                                <td>Sunny</td>
+                                <td>4</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="todo">
+                    <div class="head">
+                        <h3>Data of Current Location</h3>
+                        <i class='bx '></i>
+                        <i class='bx '></i>
+                    </div>
+                    <ul class="todo-list">
+                        <!-- Data will be loaded dynamically here -->
+                    </ul>
+                </div>
+                <div class="containermt-5">
+                    <div class="row">
+                        <div class="col-md-6 offset-md-3">
+                            <h1 class="text-center">Accident Detection System</h1>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Recent Accident Information</h5>
+                                    <p class="card-text" id="detection_info"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- MAIN -->
+    </section>
+    <!-- CONTENT -->
+
+
+    <span id="weather-text" class="text">
+        <h3>Loading...</h3>
+        <p>Weather</p>
+    </span>
+
+    <form id="searchForm">
+        <div class="form-input">
+            <input id="searchInput" type="text" placeholder="Search...">
+            <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+        </div>
+    </form>
+
+    <ul class="todo-list">
+        <!-- Data will be loaded dynamically here -->
+    </ul>
+
+    <script>
+        function showLastYearData() {
+            // Open page or perform action to show last year's accident data
+            window.location.href = "last_year_data_page.html";
+        }
+
+        function showAnalytics() {
+            // Open page or perform action to show analytics
+            window.location.href = "analytics.html";
+        }
+
+        function showMessageBox() {
+            // Open message box showing accident prone areas within 800m
+            alert("Message: Accident prone areas within 800m will be shown here.");
+        }
+
+        function showFineMessageBox() {
+            // Open message box showing details of driver to be fined
+            alert("Message: The driver of car (numberplate number) at Loc A isn't driving properly and need to be fined.");
+        }
+
+        function showMonthWiseData() {
+            // Handle action to show accident details month wise
+            alert("Showing accident details month wise");
+            // You can add code to display month-wise accident details here
+        }
+
+        function showYearWiseData() {
+            // Handle action to show accident details year wise
+            alert("Showing accident details year wise");
+            // You can add code to display year-wise accident details here
+        }
+
+        document.getElementById('searchForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the form from submitting
+
+            const searchInput = document.getElementById('searchInput').value.trim();
+            if (searchInput) {
+                // Search for the location in the table and show its data
+                const locationRow = document.querySelector(`.location[data-location="${searchInput}"]`);
+                if (locationRow) {
+                    const todoList = document.querySelector('.todo-list');
+                    todoList.innerHTML = ''; // Clear existing data
+                    const data = [
+                        "2 k Bike and 3.2 k Car Accident",
+                        "900 Injured, 200 Deaths",
+                        "Bad Road Condition",
+                        "Drive at 60-80 km/hr",
+                        "60% Clear Weather"
+                    ];
+                    data.forEach(item => {
+                        const li = document.createElement('li');
+                        li.classList.add('completed');
+                        li.innerHTML = `<p>${item}</p><i class='bx bx-dots-vertical-rounded' ></i>`;
+                        todoList.appendChild(li);
+                    });
+                } else {
+                    alert('Location not found!');
+                }
+            } else {
+                alert('Please enter a location!');
+            }
+        });
+        function updateWeather(place) {
+            place = 'Karnataka'
+            const apiKey = 'd11c2010d28c4453a6383143242702';
+            const apiUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${place}`;
+
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const weatherInfo = document.getElementById('weather-text');
+                    weatherInfo.innerHTML = `
+                        <h3>${data.location.name}, ${data.location.country}</h3>
+                        <p>${data.current.temp_c}°C, ${data.current.condition.text}</p>
+                    `;
+                })
+                .catch(error => {
+                    console.error('There was a problem fetching the weather data:', error);
+                });
+        }
+
+        document.getElementById('searchForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the form from submitting
+
+            const searchInput = document.getElementById('searchInput').value.trim();
+            if (searchInput) {
+                updateWeather(searchInput); // Update weather for the entered location
+            } else {
+                alert('Please enter a location!');
+            }
+        });
+
+        // Call the updateWeather function with the location (e.g., Karnataka) when the page loads
+        window.addEventListener('load', function () {
+            updateWeather('Karnataka');
+        });
+
+        function updateDetectionInfo() {
+            fetch('/detect_accident')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('detection_info').innerText = data;
+                });
+        }
+        setInterval(updateDetectionInfo, 1000);
+    </script>
+</body>
+
+</html>

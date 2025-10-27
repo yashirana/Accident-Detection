@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Custom Black Circle Marker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        #map {
+            height: 600px;
+            margin: 20px auto;
+            width: 80%;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        td {
+            border-bottom: 1px solid #ddd;
+        }
+        .marker {
+            background-color: black;
+            border-radius: 50%;
+            width: 10px;
+            height: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bangalore Accident Data Analysis</h1>
+    <div id="map"></div>
+    <table id="accidentTable">
+        <thead>
+            <tr>
+                <th>Route</th>
+                <th>Road Condition</th>
+                <th>Precaution</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const accidentData = [
+                { route: 'Kasturba Road', roadcondition: 'Narrow', precaution: 'Find Alternative Route', description: 'Heavy Traffic', coordinates: [77.42326072846186,
+                12.548672416535311] },
+                { route: 'Millers Road', roadcondition: 'Pavements Overrun', precaution: 'Low Speed Limit', description: 'Sharp Turns', coordinates: [77.59963489814749,
+                13.097624693111669] },
+                { route: 'Bellary Road', roadcondition: 'Good', precaution: '-', description: 'Light Traffic', coordinates: [77.61817970175196,
+                12.98787975354314] },
+                { route: 'Convert Road', roadcondition: 'Good', precaution: 'Find Alternate Route', description: 'Accident (Collision)', coordinates: [77.57789600000052,
+                12.968866013771546] },
+                { route: 'Park Plaza Junction', roadcondition: 'Slippery', precaution: 'Low Speed Limit', description: 'Heavy Rainfall', coordinates: [77.59406627166084,
+                13.091593999999986] },
+                // Add more data as needed
+            ];
+
+            const tableBody = document.querySelector('#accidentTable tbody');
+            accidentData.forEach(accident => {
+                const row = document.createElement('tr');
+                
+                Object.values(accident).slice(0, 4).forEach(text => {  // Exclude coordinates
+                    const cell = document.createElement('td');
+                    cell.textContent = text;
+                    row.appendChild(cell);
+                });
+                
+                tableBody.appendChild(row);
+            });
+
+        // Access token
+        mapboxgl.accessToken = 'pk.eyJ1IjoiZGVlcDI3OTIiLCJhIjoiY2x4ZGpuZW83MDZtZTJrcXQ2NGNycXMxdSJ9.uEUnlQB3Zcxs3F8E2JQhIA';
+
+        // const aboutData = JSON.parse('{{ data|tojson|safe }}');
+        // console.log(aboutData[7])
+
+        // Array of coordinates
+        const coordinates = [
+            [77.5816986734381, 12.979567234934038],
+            [77.57749376988772, 12.973224980690162],
+            [77.58769224146204, 12.978411587631172],
+            [77.59539535205039, 12.97380930189287],
+            [77.59842946492148, 12.976759610007619]
+        ];
+
+        // Function to get a random element from the array
+        function getRandomElement(arr) {
+            const randomIndex = Math.floor(Math.random() * arr.length);
+            return arr[randomIndex];
+        }
+
+        // Get a random coordinate
+        const randomCoordinate = getRandomElement(coordinates);
+
+        // Initialize the map
+        var map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: 'mapbox://styles/mapbox/streets-v11', // style URL
+            center: [77.58721893481771, 12.975870638103956], // starting position [lng, lat]
+            zoom: 15 // starting zoom
+        });
+
+        // Function to get a random time between 5 and 10 seconds
+        function getRandomTime() {
+            return Math.random() * 5000 + 5000; // time in milliseconds
+        }        
+
+        // Add zoom and rotation controls to the map.
+        map.addControl(new mapboxgl.NavigationControl());
+
+        // Create a custom marker element
+        var el = document.createElement('div');
+        el.className = 'marker';
+
+        // Function to add a new random marker to the mapz
+        function addRandomMarker() {
+            const randomCoordinate = getRandomElement(coordinates);
+            new mapboxgl.Marker()
+                .setLngLat(randomCoordinate)
+                .setPopup(new mapboxgl.Popup({ offset: 25 }).setText(['Live Accident']))
+                .addTo(map);
+        }
+        // Function to repeatedly add random markers at random intervals
+        function addMarkersAtIntervals() {
+            addRandomMarker();
+            setTimeout(addMarkersAtIntervals, getRandomTime());
+        }
+        addMarkersAtIntervals();
+
+        function createMarkerElement() {
+                const el = document.createElement('div');
+                el.className = 'marker';
+                return el;
+            }
+
+            // Add markers to the map
+            accidentData.forEach(accident => {
+                new mapboxgl.Marker({ color: 'black' })
+                    .setLngLat(accident.coordinates)
+                    .setPopup(new mapboxgl.Popup({ offset: 25 }).setText(`${accident.route}: ${accident.description}`))
+                    .addTo(map);
+            });
+            const highRiskPaths = {
+                "type": "FeatureCollection",
+                "features": [
+                    {
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "LineString",
+                            "coordinates": [
+                            [ 77.6017422219752, 12.976665329779706],
+                            [ 77.60237365047118, 12.979229078320117],]
+                        },
+                        "properties": {
+                            "description": "High Risk Path"
+                        }
+                    },
+                    {
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "LineString",
+                            "coordinates": [
+                            [77.58167638798398, 12.979562926067445],
+                            [77.58128468317062, 12.978903630633823]
+                            ]
+                        },
+                        "properties": {
+                            "description": "High Risk Path"
+                        }
+                    }
+                ]
+            };
+
+            // Add high-risk paths to the map
+            map.on('load', () => {
+                map.addSource('highRiskPaths', {
+                    'type': 'geojson',
+                    'data': highRiskPaths
+                });
+
+                map.addLayer({
+                    'id': 'highRiskPathsLayer',
+                    'type': 'line',
+                    'source': 'highRiskPaths',
+                    'layout': {
+                        'line-join': 'round',
+                        'line-cap': 'round'
+                    },
+                    'paint': {
+                        'line-color': '#ff0000',
+                        'line-width': 4
+                    }
+                });
+                map.on('click', 'highRiskPathsLayer', (e) => {
+                    const coordinates = e.lngLat;
+                    const description = e.features[0].properties.description;
+
+                    new mapboxgl.Popup()
+                        .setLngLat(coordinates)
+                        .setHTML(`<p>${description}</p>`)
+                        .addTo(map);
+                });
+
+                // Change the cursor to a pointer when the mouse is over the high-risk paths layer.
+                map.on('mouseenter', 'highRiskPathsLayer', () => {
+                    map.getCanvas().style.cursor = 'pointer';
+                });
+
+                // Change it back to a pointer when it leaves.
+                map.on('mouseleave', 'highRiskPathsLayer', () => {
+                    map.getCanvas().style.cursor = '';
+                });
+            });
+});
+    </script>
+</body>
+</html>
