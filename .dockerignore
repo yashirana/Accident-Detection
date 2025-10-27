@@ -1,0 +1,18 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+.git
+*.git
+data/
+accident detected/
+output.avi
+*.mp4
+*.avi
+model_weights.h5
+node_modules/
+.pytest_cache/
+/*.pyo
+*.pyd
+*.sqlite3
