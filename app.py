@@ -9,31 +9,27 @@ import time
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 import telebot
-import tempfile
 
 app = Flask(__name__)
-bootstrap = Bootstrap(app)
+bootstrap = Bootstrap(app)  
 
-# Configuration via environment variables (suitable for container/cloud deploy)
-model_json_file = os.environ.get("MODEL_JSON", "model.json")
-model_weights_file = os.environ.get("MODEL_WEIGHTS", "model_weights.h5")
-video_path = os.environ.get("VIDEO_PATH", "Demo2.mp4")
-save_directory = os.environ.get("SAVE_DIR", "accident detected")
-spreadsheet_id = os.environ.get("GOOGLE_SHEET_ID", os.environ.get("SPREADSHEET_ID", None))
-range_name = os.environ.get("SHEET_RANGE", "Sheet1!A:H")
-# Optional Telegram
-bot_token = os.environ.get("TELEGRAM_TOKEN")
-chat_id = os.environ.get("TELEGRAM_CHAT_ID")
+model_json_file = r"D:\Karnataka_project\Accident-Detection-System-main\Accident-Detection-System-main\model.json"
+model_weights_file = r"D:\Karnataka_project\Accident-Detection-System-main\Accident-Detection-System-main\model_weights.h5"
+video_path = r"D:\Karnataka_project\Accident-Detection-System-main\Accident-Detection-System-main\Demo2.mp4"  # Update with your video file path
+save_directory = r"D:\Karnataka_project\Accident-Detection-System-main\Accident-Detection-System-main\accident detected"  # Update with your save directory
+spreadsheet_id = "1Bd0BkDw0fzBD1tB2f6WvpE4E6UxG_hADqY6o650i7cA"  # Update with your spreadsheet ID
+range_name = "Sheet1!A:H"  # Update with the correct sheet name and range
+# bot_token = "6464904338:AAGZgrNECVisxgKryybFkqZ530bMU9FgIiI"  # Update with your Telegram bot token
+# chat_id = "1210549392"  # Update with your Telegram chat ID
 
-# Optionally provide service-account JSON as the full JSON string in the
-# SERVICE_ACCOUNT_JSON env var. If provided, write to a temp file and use it.
-service_account_json = os.environ.get("SERVICE_ACCOUNT_JSON")
-service_account_path = None
-if service_account_json:
-    fd, service_account_path = tempfile.mkstemp(suffix=".json")
-    with os.fdopen(fd, "w") as f:
-        f.write(service_account_json)
 
+if not os.path.exists(model_json_file):
+    print(f"Error: '{model_json_file}' not found.")
+    exit()
+
+if not os.path.exists(model_weights_file):
+    print(f"Error: '{model_weights_file}' not found.")      
+    exit()
 
 # def send_telegram_message(bot, chat_id, message):
 #     try:
@@ -48,21 +44,8 @@ font = cv2.FONT_HERSHEY_SIMPLEX
 
 def authenticate_google_sheets():
     scopes = ['https://www.googleapis.com/auth/spreadsheets']
-    # Prefer SERVICE_ACCOUNT_JSON written to a temp file (service_account_path).
-    # Fallback to SERVICE_ACCOUNT_FILE env var if provided and points to an existing file.
-    creds_file = None
-    if service_account_path and os.path.exists(service_account_path):
-        creds_file = service_account_path
-    else:
-        sa_file_env = os.environ.get("SERVICE_ACCOUNT_FILE")
-        if sa_file_env and os.path.exists(sa_file_env):
-            creds_file = sa_file_env
-
-    if not creds_file:
-        raise RuntimeError("No service account JSON found. Set SERVICE_ACCOUNT_JSON or SERVICE_ACCOUNT_FILE env var.")
-
     credentials = service_account.Credentials.from_service_account_file(
-        creds_file,
+        r"D:\Karnataka_project\Accident-Detection-System-main\Accident-Detection-System-main\graph-388510-b8eef180584d.json",  # Update with your service account JSON file path
         scopes=scopes
     )
     service = build('sheets', 'v4', credentials=credentials)
@@ -169,7 +152,4 @@ def about():
 
 
 if __name__ == '__main__':
-    # Use PORT env var if provided (Cloud Run sets this automatically)
-    port = int(os.environ.get('PORT', 8080))
-    debug_flag = os.environ.get('DEBUG', 'false').lower() == 'true'
-    app.run(host='0.0.0.0', port=port, debug=debug_flag)
+    app.run(debug=True)
